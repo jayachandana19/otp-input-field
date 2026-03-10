@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>OTP Verification - MIC BANK</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+    <nav>
+        <h2 class="logo">MIC BANK</h2>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+        </ul>
+    </nav>
+</header>
+
+<section class="auth-section">
+
+    <div class="auth-card">
+
+        <h2>OTP Verification</h2>
+        <p class="subtitle">
+            Enter the 4-digit OTP sent to your registered email
+        </p>
+
+        <!-- SMS DISPLAY -->
+        <div id="smsBox" class="sms-box"></div>
+
+        <div class="otp-container">
+            <input type="text" maxlength="1" class="otp-input">
+            <input type="text" maxlength="1" class="otp-input">
+            <input type="text" maxlength="1" class="otp-input">
+            <input type="text" maxlength="1" class="otp-input">
+        </div>
+
+        <button class="auth-btn" onclick="verifyOTP()">
+            Verify OTP
+        </button>
+
+        <div id="message" class="message"></div>
+
+    </div>
+
+</section>
+
+<footer>
+    <p>© 2026 MIC BANK. All rights reserved.</p>
+</footer>
+
+<script>
+
+/* OTP INPUT BOXES */
+const inputs = document.querySelectorAll(".otp-input");
+
+/* GENERATE RANDOM OTP */
+let generatedOTP = Math.floor(1000 + Math.random() * 9000);
+
+/* DISPLAY OTP LIKE SMS */
+document.getElementById("smsBox").innerHTML =
+"📩 SMS from MIC BANK: <br><b>Your OTP is " + generatedOTP + "</b>";
+
+/* AUTO MOVE INPUT */
+inputs.forEach((input, index) => {
+    input.addEventListener("input", () => {
+        if (input.value.length === 1 && index < inputs.length - 1) {
+            inputs[index + 1].focus();
+        }
+    });
+});
+
+/* VERIFY OTP */
+function verifyOTP(){
+
+    let enteredOTP = "";
+
+    inputs.forEach(input => {
+        enteredOTP += input.value;
+    });
+
+    if(enteredOTP.length < 4){
+        document.getElementById("message").innerHTML =
+        "<span style='color:red;'>Please enter complete OTP</span>";
+        return;
+    }
+
+    if(enteredOTP == generatedOTP){
+
+        localStorage.setItem("userOTP", enteredOTP);
+
+        window.location.href="success.html";
+
+    }else{
+
+        document.getElementById("message").innerHTML =
+        "<span style='color:red;'>Invalid OTP</span>";
+
+    }
+
+}
+
+</script>
+
+</body>
+</html>
